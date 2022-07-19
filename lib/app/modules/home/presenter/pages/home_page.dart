@@ -30,15 +30,13 @@ class HomePage extends StatelessWidget {
             selector: (state) => state.pictures,
             builder: (_, pictures) => Visibility(
               visible: pictures.isNotEmpty,
-              child: Expanded(
-                child: LoadedList(
-                  itemCount: pictures.length,
-                  hasMoreData: _controller.hasMoreData,
-                  itemBuilder: (_, index) =>
-                      PictureTile(picture: pictures[index]),
-                  onLoadNextData: _controller.loadNextData,
-                  onRefresh: _controller.loadPictures,
-                ),
+              child: LoadedList(
+                itemCount: pictures.length,
+                hasMoreData: _controller.hasMoreData,
+                itemBuilder: (_, index) =>
+                    PictureTile(picture: pictures[index]),
+                onLoadNextData: _controller.loadNextData,
+                onRefresh: _controller.loadPictures,
               ),
             ),
           ),

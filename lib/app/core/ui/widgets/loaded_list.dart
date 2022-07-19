@@ -49,20 +49,17 @@ class _LoadedListState extends State<LoadedList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: RefreshIndicator(
-            onRefresh: () async => widget.onRefresh(),
-            child: ListView.builder(
-              controller: _scrollController,
-              physics: const BouncingScrollPhysics(),
-              itemCount: widget.itemCount,
-              itemBuilder: widget.itemBuilder,
-            ),
-          ),
+    return Expanded(
+      child: RefreshIndicator(
+        onRefresh: () async => widget.onRefresh(),
+        child: ListView.builder(
+          controller: _scrollController,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          physics: const BouncingScrollPhysics(),
+          itemCount: widget.itemCount,
+          itemBuilder: widget.itemBuilder,
         ),
-      ],
+      ),
     );
   }
 }
