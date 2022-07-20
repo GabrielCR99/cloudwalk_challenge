@@ -16,8 +16,8 @@ class CustomShimmer extends StatelessWidget {
     this.highlightColor,
     this.isRounded = false,
     this.borderRadius,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
