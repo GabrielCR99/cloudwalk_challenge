@@ -11,10 +11,9 @@ part 'home_state.dart';
 class HomeController extends Cubit<HomeState> {
   final FetchPicturesUsecase _usecase;
 
-  var pictures = const <PictureOfTheDayEntity>[];
-  List<PictureOfTheDayEntity>? _cachedPictures;
+  var _cachedPictures = const <PictureOfTheDayEntity>[];
 
-  int get totalPictures => pictures.length;
+  int get totalPictures => state.pictures.length;
 
   bool get hasMoreData =>
       totalPictures < 100 && state.status != HomeStatus.failure;
@@ -22,13 +21,6 @@ class HomeController extends Cubit<HomeState> {
   HomeController({required FetchPicturesUsecase usecase})
       : _usecase = usecase,
         super(const HomeState.initial());
-
-  void _emitLoadingState() => emit(
-        state.copyWith(
-          status: HomeStatus.loading,
-          pictures: const <PictureOfTheDayEntity>[],
-        ),
-      );
 
   void _emitLoadedState(
     Either<Failure, List<PictureOfTheDayEntity>> result, {
@@ -38,7 +30,6 @@ class HomeController extends Cubit<HomeState> {
         result.fold(
           (failure) => state.copyWith(status: HomeStatus.failure),
           (success) {
-            pictures = success;
             if (withCache) {
               _cachedPictures = success;
             }
@@ -52,24 +43,25 @@ class HomeController extends Cubit<HomeState> {
       );
 
   Future<void> loadPictures() async {
-    _emitLoadingState();
+    emit(state.copyWith(status: HomeStatus.loading));
 
     final result = await _usecase(totalPictures);
-    _emitLoadedState(result);
+
+    return _emitLoadedState(result);
   }
 
   Future<void> loadNextData() async {
     if (state.status != HomeStatus.loading) {
-      _emitLoadingState();
+      emit(state.copyWith(status: HomeStatus.loading));
 
       final result = await _usecase(totalPictures + 10);
 
-      _emitLoadedState(result, withCache: false);
+      return _emitLoadedState(result, withCache: false);
     }
   }
 
   void filterPictures(String searchText) {
-    final foundPictures = _cachedPictures!
+    final foundPictures = _cachedPictures
         .where(
           (e) =>
               e.title.toLowerCase().contains(searchText.toLowerCase()) ||
@@ -77,6 +69,6 @@ class HomeController extends Cubit<HomeState> {
         )
         .toList();
 
-    emit(state.copyWith(pictures: foundPictures));
+    return emit(state.copyWith(pictures: foundPictures));
   }
 }

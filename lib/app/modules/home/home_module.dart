@@ -1,4 +1,3 @@
-import '../../core/shared/data/rest_client/rest_client.dart';
 import '../../core/shared/domain/usecases/async_usecase.dart';
 import 'data/datasources/home_datasource.dart';
 import 'data/datasources/local/home_local_datasource_decorator_impl.dart';
@@ -17,18 +16,16 @@ class HomeModule extends Module {
   final List<Bind> binds = [
     Bind.lazySingleton<HomeDatasource>(
       (i) => HomeLocalDatasourceDecoratorImpl(
-        homeDatasource: HomeRemoteDatasourceImpl(restClient: i<RestClient>()),
+        homeDatasource: HomeRemoteDatasourceImpl(restClient: i()),
       ),
     ),
     Bind.lazySingleton<HomeRepository>(
-      (i) => HomeRepositoryImpl(datasource: i<HomeDatasource>()),
+      (i) => HomeRepositoryImpl(datasource: i()),
     ),
     Bind.lazySingleton<AsyncUsecase>(
-      (i) => FetchPicturesUsecase(repository: i<HomeRepository>()),
+      (i) => FetchPicturesUsecase(repository: i()),
     ),
-    BlocBind.lazySingleton(
-      (i) => HomeController(usecase: i<FetchPicturesUsecase>()),
-    ),
+    BlocBind.lazySingleton((i) => HomeController(usecase: i())),
   ];
 
   @override

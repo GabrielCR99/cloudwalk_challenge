@@ -17,10 +17,7 @@ class HomeState extends Equatable {
   });
 
   const HomeState.initial()
-      : this._(
-          pictures: const <PictureOfTheDayEntity>[],
-          status: HomeStatus.inital,
-        );
+      : this._(pictures: const [], status: HomeStatus.inital);
 
   @override
   List<Object?> get props => [pictures, status];
@@ -28,10 +25,9 @@ class HomeState extends Equatable {
   HomeState copyWith({
     List<PictureOfTheDayEntity>? pictures,
     HomeStatus? status,
-  }) {
-    return HomeState._(
-      pictures: pictures ?? this.pictures,
-      status: status ?? this.status,
-    );
-  }
+  }) =>
+      HomeState._(
+        pictures: pictures ?? this.pictures,
+        status: status ?? this.status,
+      );
 }

@@ -12,8 +12,8 @@ class DioRestClient implements RestClient {
 
   final _defaultOptions = BaseOptions(
     baseUrl: 'https://api.nasa.gov',
-    connectTimeout: 60000,
-    receiveTimeout: 60000,
+    connectTimeout: const Duration(milliseconds: 60000),
+    receiveTimeout: const Duration(milliseconds: 60000),
     headers: {
       HttpHeaders.acceptHeader:
           ContentType('application', 'json', charset: 'utf-8').toString(),

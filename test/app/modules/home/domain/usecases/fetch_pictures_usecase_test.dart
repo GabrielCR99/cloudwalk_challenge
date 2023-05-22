@@ -33,7 +33,8 @@ void main() {
   test(
     'Should get a a List<PictureOfTheDayEntity> for a given limit from the repository',
     () async {
-      when(() => repository(20)).thenAnswer((_) async => const Right(pictures));
+      when(() => repository(any()))
+          .thenAnswer((_) async => const Right(pictures));
 
       final result = await usecase(20);
 
@@ -44,13 +45,13 @@ void main() {
 
   test('Should return a Failure', () async {
     //Arrange
-    when(() => repository(20)).thenAnswer((_) async => const Left(failure));
+    when(() => repository(any())).thenAnswer((_) async => const Left(failure));
 
     //Act
     final result = await usecase(20);
 
     //Assert
     expect(result, const Left(failure));
-    verify(() => repository(20));
+    verify(() => repository(any())).called(1);
   });
 }

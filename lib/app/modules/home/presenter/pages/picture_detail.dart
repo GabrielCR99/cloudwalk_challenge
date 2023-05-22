@@ -30,7 +30,7 @@ class PictureDetail extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: Text(
               DateHelper.formatDate(picture.date),
-              style: textTheme.subtitle1,
+              style: textTheme.titleMedium,
             ),
           ),
           Padding(
@@ -38,7 +38,7 @@ class PictureDetail extends StatelessWidget {
             child: Text(
               picture.explanation,
               textAlign: TextAlign.justify,
-              style: textTheme.bodyText1,
+              style: textTheme.bodyLarge,
             ),
           ),
         ],

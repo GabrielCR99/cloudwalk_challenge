@@ -17,7 +17,7 @@ class RestClientHelper {
       final statusMessage = response?.statusMessage;
       final data = response?.data;
 
-      if (dioError.type != DioErrorType.response) {
+      if (dioError.type != DioErrorType.unknown) {
         return RestClientException(
           statusCode: statusCode,
           message: _connectionError,
